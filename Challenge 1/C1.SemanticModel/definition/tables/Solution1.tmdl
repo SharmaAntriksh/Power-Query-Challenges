@@ -1,0 +1,43 @@
+table Solution1
+	lineageTag: 8cb63326-29dd-48a1-9306-9aab9e06b256
+
+	column String
+		dataType: string
+		lineageTag: 6b8d3337-e92f-4b3b-a2b7-c81e2945d194
+		summarizeBy: none
+		sourceColumn: String
+
+		annotation SummarizationSetBy = Automatic
+
+	column Digits
+		dataType: int64
+		formatString: 0
+		lineageTag: 08d77afe-492a-4ba6-96ab-346dbeeb7fbe
+		summarizeBy: sum
+		sourceColumn: Digits
+
+		annotation SummarizationSetBy = Automatic
+
+	column 'Sum of Digits'
+		dataType: int64
+		formatString: 0
+		lineageTag: 752a75c0-f697-4b20-98ad-efd61c41c363
+		summarizeBy: sum
+		sourceColumn: Sum of Digits
+
+		annotation SummarizationSetBy = Automatic
+
+	partition Solution1 = m
+		mode: import
+		source =
+				let
+				    Source = RawData,
+				    ExtractDigits = Table.AddColumn ( Source, "Digits", each Number.From ( Text.Combine ( List.Intersect ( { Text.ToList ( [String] ), {"0".."9"} } ) ) ), Int64.Type ),
+				    AddDigitsTotal = Table.AddColumn ( ExtractDigits, "Sum of Digits", each List.Sum ( List.Transform ( List.Intersect ( { Text.ToList ( [String] ), {"0".."9"} } ), each Number.From(_) ) ) , Int64.Type )
+				in
+				    AddDigitsTotal
+
+	annotation PBI_NavigationStepName = Navigation
+
+	annotation PBI_ResultType = Table
+
