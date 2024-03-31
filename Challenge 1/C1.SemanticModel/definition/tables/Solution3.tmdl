@@ -50,9 +50,9 @@ table Solution3
 				        each List.Sum ( List.Transform ( [Intersection], each Number.From ( _ ) ) ),
 				        Int64.Type
 				    ),
-				    #"Removed Columns" = Table.RemoveColumns(GetDigitsSum,{"Intersection"})
+				    RemoveIntersectionColumn = Table.RemoveColumns ( GetDigitsSum, { "Intersection" } )
 				in
-				    #"Removed Columns"
+				    RemoveIntersectionColumn
 
 	annotation PBI_NavigationStepName = Navigation
 
