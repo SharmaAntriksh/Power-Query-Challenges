@@ -32,8 +32,25 @@ table Solution1
 		source =
 				let
 				    Source = RawData,
-				    ExtractDigits = Table.AddColumn ( Source, "Digits", each Number.From ( Text.Combine ( List.Intersect ( { Text.ToList ( [String] ), {"0".."9"} } ) ) ), Int64.Type ),
-				    AddDigitsTotal = Table.AddColumn ( ExtractDigits, "Sum of Digits", each List.Sum ( List.Transform ( List.Intersect ( { Text.ToList ( [String] ), {"0".."9"} } ), each Number.From(_) ) ) , Int64.Type )
+				    ExtractDigits = Table.AddColumn (
+				        Source,
+				        "Digits",
+				        each Number.From (
+				            Text.Combine ( List.Intersect ( { Text.ToList ( [String] ), { "0" .. "9" } } ) )
+				        ),
+				        Int64.Type
+				    ),
+				    AddDigitsTotal = Table.AddColumn (
+				        ExtractDigits,
+				        "Sum of Digits",
+				        each List.Sum (
+				            List.Transform (
+				                List.Intersect ( { Text.ToList ( [String] ), { "0" .. "9" } } ),
+				                each Number.From ( _ )
+				            )
+				        ),
+				        Int64.Type
+				    )
 				in
 				    AddDigitsTotal
 

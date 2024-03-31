@@ -33,6 +33,19 @@
             "width": 234
           },
           "zIndex": 0
+        },
+        {
+          "location": {
+            "x": 568,
+            "y": 0
+          },
+          "nodeIndex": "Solution3",
+          "nodeLineageTag": "0a59ce07-5fc7-4a2b-8710-f46e9ed597f8",
+          "size": {
+            "height": 152,
+            "width": 234
+          },
+          "zIndex": 0
         }
       ],
       "name": "All tables",
