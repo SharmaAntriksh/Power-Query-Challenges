@@ -38,10 +38,21 @@ table Solution3
 				        each List.Intersect ( { Text.ToList ( [String] ), { "0" .. "9" } } ),
 				        type list
 				    ),
-				    GetDigits = Table.AddColumn ( IntersectLists, "Digits", each Number.From ( Text.Combine ( [Intersection] ) ), Int64.Type ),
-				    GetDigitsSum = Table.AddColumn ( GetDigits, "Sum Of Digits", each List.Sum ( List.Transform ( [Intersection], each Number.From ( _ ) ) ), Int64.Type )
+				    GetDigits = Table.AddColumn (
+				        IntersectLists,
+				        "Digits",
+				        each Number.From ( Text.Combine ( [Intersection] ) ),
+				        Int64.Type
+				    ),
+				    GetDigitsSum = Table.AddColumn (
+				        GetDigits,
+				        "Sum Of Digits",
+				        each List.Sum ( List.Transform ( [Intersection], each Number.From ( _ ) ) ),
+				        Int64.Type
+				    ),
+				    #"Removed Columns" = Table.RemoveColumns(GetDigitsSum,{"Intersection"})
 				in
-				    GetDigitsSum
+				    #"Removed Columns"
 
 	annotation PBI_NavigationStepName = Navigation
 

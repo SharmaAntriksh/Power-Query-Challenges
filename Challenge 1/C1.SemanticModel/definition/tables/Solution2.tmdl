@@ -46,7 +46,11 @@ table Solution2
 				                in
 				                    Result
 				        ),
-				    TableFromLists = Table.FromRows ( Source, type table [String = text, Digits = Int64.Type, Sum of Digits = Int64.Type] )
+				    TableFromLists = 
+				        Table.FromRows ( 
+				            Source, 
+				            type table [String = text, Digits = Int64.Type, Sum of Digits = Int64.Type] 
+				        )
 				in
 				    TableFromLists
 				```
