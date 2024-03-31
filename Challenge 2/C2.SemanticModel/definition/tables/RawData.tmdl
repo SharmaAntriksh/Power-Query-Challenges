@@ -1,0 +1,48 @@
+table RawData
+	lineageTag: 3df8356d-6158-4d74-9f84-ccbf68df8f24
+
+	column Data1
+		dataType: string
+		lineageTag: 45c5a9ba-538d-4d20-be38-eda3b7970a1e
+		summarizeBy: none
+		sourceColumn: Data1
+
+		annotation SummarizationSetBy = Automatic
+
+	column Data2
+		dataType: string
+		lineageTag: c34beb23-64f2-4979-8446-16c4af47542c
+		summarizeBy: none
+		sourceColumn: Data2
+
+		annotation SummarizationSetBy = Automatic
+
+	column Data3
+		dataType: string
+		lineageTag: 6e8b1380-819a-4529-a1d9-68dde2cfaf68
+		summarizeBy: none
+		sourceColumn: Data3
+
+		annotation SummarizationSetBy = Automatic
+
+	column Data4
+		dataType: string
+		lineageTag: a7006184-1187-41f2-9eea-a1315b839a95
+		summarizeBy: none
+		sourceColumn: Data4
+
+		annotation SummarizationSetBy = Automatic
+
+	partition RawData = m
+		mode: import
+		source =
+				let
+				    Source = Table.FromRows(Json.Document(Binary.Decompress(Binary.FromText("Jcw3DoRAEAXRu3RMwOAJsYs3u5hgNPe/xhZN8KTSV6utlUI8abDgEOdZKakWBrkuFfXBilOXkOoQPXehTjXZY8OliwnIASlunTJqxI7gPfLJCd/nldEtIWf8EItzfw==", BinaryEncoding.Base64), Compression.Deflate)), let _t = ((type nullable text) meta [Serialized.Text = true]) in type table [Data1 = _t, Data2 = _t, Data3 = _t, Data4 = _t]),
+				    #"Changed Type" = Table.TransformColumnTypes(Source,{{"Data1", type text}, {"Data2", type text}, {"Data3", type text}, {"Data4", type text}})
+				in
+				    #"Changed Type"
+
+	annotation PBI_NavigationStepName = Navigation
+
+	annotation PBI_ResultType = Table
+
