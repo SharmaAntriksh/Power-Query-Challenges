@@ -1,0 +1,59 @@
+table Solution1
+	lineageTag: 1e16f1ea-4928-452d-ad7d-10c2ff37009b
+
+	column Alpha
+		dataType: string
+		lineageTag: b89f71a5-0c01-4b4c-b65c-182fe206ccba
+		summarizeBy: none
+		sourceColumn: Alpha
+
+		annotation SummarizationSetBy = Automatic
+
+	column Number
+		dataType: int64
+		formatString: 0
+		lineageTag: e6658c77-25b0-4577-9c35-72d86c461d63
+		summarizeBy: sum
+		sourceColumn: Number
+
+		annotation SummarizationSetBy = Automatic
+
+	partition Solution1 = m
+		mode: import
+		source =
+				let
+				  Source = RawData,
+				  InsertTextList = Table.AddColumn (
+				    Source,
+				    "TextOnly",
+				    each List.Select ( Record.ToList ( _ ), each Value.Is ( Value.FromText ( _ ), type text ) )
+				  ),
+				  InsertNumbersList = Table.AddColumn (
+				    InsertTextList,
+				    "NumbersOnly",
+				    each List.Select (
+				      Record.ToList ( _ ),
+				      each Value.Is ( Value.FromText ( _ ), type number )
+				    )
+				  ),
+				  NumbersOnlyList = Table.SelectRows (
+				    Table.ExpandListColumn ( Table.SelectColumns ( InsertNumbersList, { "NumbersOnly" } ), "NumbersOnly" ),
+				    each [NumbersOnly] <> null and [NumbersOnly] <> ""
+				  )[NumbersOnly],
+				  TextOnlyList = Table.SelectRows (
+				    Table.ExpandListColumn (
+				      Table.SelectColumns ( InsertNumbersList, { "TextOnly" } ),
+				      "TextOnly"
+				    ),
+				    each [TextOnly] <> null and [TextOnly] <> ""
+				  )[TextOnly],
+				  Result = Table.FromColumns ( { TextOnlyList, NumbersOnlyList } ),
+				  ChangedTypeFinal = Table.TransformColumnTypes(Result,{{"Column1", type text}, {"Column2", Int64.Type}}),
+				  RenamedColumns = Table.RenameColumns(ChangedTypeFinal,{{"Column1", "Alpha"}, {"Column2", "Number"}})
+				in
+				  RenamedColumns
+
+	annotation PBI_NavigationStepName = Navigation
+
+	annotation PBI_ResultType = Table
+

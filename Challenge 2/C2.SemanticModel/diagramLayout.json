@@ -10,13 +10,13 @@
       "nodes": [
         {
           "location": {
-            "x": 0,
-            "y": 0
+            "x": 284,
+            "y": 24
           },
-          "nodeIndex": "RawData",
-          "nodeLineageTag": "3df8356d-6158-4d74-9f84-ccbf68df8f24",
+          "nodeIndex": "Solution1",
+          "nodeLineageTag": "1e16f1ea-4928-452d-ad7d-10c2ff37009b",
           "size": {
-            "height": 176,
+            "height": 128,
             "width": 234
           },
           "zIndex": 0

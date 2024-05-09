@@ -8,9 +8,9 @@ model Model
 
 annotation __PBI_TimeIntelligenceEnabled = 0
 
-annotation PBIDesktopVersion = 2.127.1235.0 (24.03)
+annotation PBIDesktopVersion = 2.128.1177.0 (24.04)
 
-annotation PBI_QueryOrder = ["RawData"]
+annotation PBI_QueryOrder = ["RawData","Solution1"]
 
 annotation PBI_ProTooling = ["DevMode"]
 

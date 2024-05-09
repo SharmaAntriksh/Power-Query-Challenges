@@ -1,0 +1,12 @@
+expression RawData =
+		let
+		    Source = Table.FromRows(Json.Document(Binary.Decompress(Binary.FromText("Jcw3DoRAEAXRu3RMwOAJsYs3u5hgNPe/xhZN8KTSV6utlUI8abDgEOdZKakWBrkuFfXBilOXkOoQPXehTjXZY8OliwnIASlunTJqxI7gPfLJCd/nldEtIWf8EItzfw==", BinaryEncoding.Base64), Compression.Deflate)), let _t = ((type nullable text) meta [Serialized.Text = true]) in type table [Data1 = _t, Data2 = _t, Data3 = _t, Data4 = _t]),
+		    #"Changed Type" = Table.TransformColumnTypes(Source,{{"Data1", type text}, {"Data2", type text}, {"Data3", type text}, {"Data4", type text}})
+		in
+		    #"Changed Type"
+	lineageTag: 2db44a94-92b8-4e80-b6e9-9e28d6525fbe
+
+	annotation PBI_NavigationStepName = Navigation
+
+	annotation PBI_ResultType = Table
+
