@@ -1,0 +1,48 @@
+table Solution2
+	lineageTag: 931f7867-a5a1-492d-95e1-5b570855b5b2
+
+	column Alpha
+		dataType: string
+		lineageTag: 1b02660e-cdd6-4f21-bb80-cb71006d12d1
+		summarizeBy: none
+		sourceColumn: Alpha
+
+		annotation SummarizationSetBy = Automatic
+
+	column Number
+		dataType: int64
+		formatString: 0
+		lineageTag: 301c2b35-3cb9-4afd-84c0-6d4de6f13972
+		summarizeBy: sum
+		sourceColumn: Number
+
+		annotation SummarizationSetBy = Automatic
+
+	partition Solution2 = m
+		mode: import
+		source =
+				let
+				    Source = RawData,
+				    InsertTextList = Table.AddColumn (
+				        Source,
+				        "TextOnly",
+				        each List.Select ( Record.ToList ( _ ), each Value.Is ( Value.FromText ( _ ), type text ) )
+				    ),
+				    InsertNumbersList = Table.AddColumn (
+				        InsertTextList,
+				        "NumbersOnly",
+				        each List.Select (
+				            Record.ToList ( _ ),
+				            each Value.Is ( Value.FromText ( _ ), type number )
+				        )
+				    ),
+				    NumbersOnlyList = List.Transform ( List.Combine ( InsertNumbersList[NumbersOnly] ), each Number.From (_) ),
+				    TextOnlyList = List.Combine ( InsertNumbersList[TextOnly] ),
+				    Result = Table.FromColumns ( { TextOnlyList, NumbersOnlyList }, type table [Alpha = text, Number = Int64.Type] )
+				in
+				    Result
+
+	annotation PBI_NavigationStepName = Navigation
+
+	annotation PBI_ResultType = Table
+
