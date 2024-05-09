@@ -22,36 +22,45 @@ table Solution1
 		mode: import
 		source =
 				let
-				  Source = RawData,
-				  InsertTextList = Table.AddColumn (
-				    Source,
-				    "TextOnly",
-				    each List.Select ( Record.ToList ( _ ), each Value.Is ( Value.FromText ( _ ), type text ) )
-				  ),
-				  InsertNumbersList = Table.AddColumn (
-				    InsertTextList,
-				    "NumbersOnly",
-				    each List.Select (
-				      Record.ToList ( _ ),
-				      each Value.Is ( Value.FromText ( _ ), type number )
-				    )
-				  ),
-				  NumbersOnlyList = Table.SelectRows (
-				    Table.ExpandListColumn ( Table.SelectColumns ( InsertNumbersList, { "NumbersOnly" } ), "NumbersOnly" ),
-				    each [NumbersOnly] <> null and [NumbersOnly] <> ""
-				  )[NumbersOnly],
-				  TextOnlyList = Table.SelectRows (
-				    Table.ExpandListColumn (
-				      Table.SelectColumns ( InsertNumbersList, { "TextOnly" } ),
-				      "TextOnly"
+				    Source = RawData,
+				    InsertTextList = Table.AddColumn (
+				        Source,
+				        "TextOnly",
+				        each List.Select ( Record.ToList ( _ ), each Value.Is ( Value.FromText ( _ ), type text ) )
 				    ),
-				    each [TextOnly] <> null and [TextOnly] <> ""
-				  )[TextOnly],
-				  Result = Table.FromColumns ( { TextOnlyList, NumbersOnlyList } ),
-				  ChangedTypeFinal = Table.TransformColumnTypes(Result,{{"Column1", type text}, {"Column2", Int64.Type}}),
-				  RenamedColumns = Table.RenameColumns(ChangedTypeFinal,{{"Column1", "Alpha"}, {"Column2", "Number"}})
+				    InsertNumbersList = Table.AddColumn (
+				        InsertTextList,
+				        "NumbersOnly",
+				        each List.Select (
+				            Record.ToList ( _ ),
+				            each Value.Is ( Value.FromText ( _ ), type number )
+				        )
+				    ),
+				    NumbersOnlyList = Table.SelectRows (
+				        Table.ExpandListColumn (
+				            Table.SelectColumns ( InsertNumbersList, { "NumbersOnly" } ),
+				            "NumbersOnly"
+				        ),
+				        each [NumbersOnly] <> null and [NumbersOnly] <> ""
+				    )[NumbersOnly],
+				    TextOnlyList = Table.SelectRows (
+				        Table.ExpandListColumn (
+				            Table.SelectColumns ( InsertNumbersList, { "TextOnly" } ),
+				            "TextOnly"
+				        ),
+				        each [TextOnly] <> null and [TextOnly] <> ""
+				    )[TextOnly],
+				    Result = Table.FromColumns ( { TextOnlyList, NumbersOnlyList } ),
+				    ChangedTypeFinal = Table.TransformColumnTypes (
+				        Result,
+				        { { "Column1", type text }, { "Column2", Int64.Type } }
+				    ),
+				    RenamedColumns = Table.RenameColumns (
+				        ChangedTypeFinal,
+				        { { "Column1", "Alpha" }, { "Column2", "Number" } }
+				    )
 				in
-				  RenamedColumns
+				    RenamedColumns
 
 	annotation PBI_NavigationStepName = Navigation
 
